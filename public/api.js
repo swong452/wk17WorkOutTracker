@@ -3,6 +3,7 @@ const API = {
     let res;
     try {
       // Fetch will get all the workout of every day
+      console.log("Client - enter public/api.js getLastWorkout()");
       res = await fetch("/api/workouts");
     } catch (err) {
       console.log(err)
@@ -11,6 +12,7 @@ const API = {
     // each object is one day of work out.
     const json = await res.json();
     // length minus one to get the very last work out
+    console.log("Client - enter public/api.js getLastWorkout(), BEFORE -1, list of workout: ", json);
     return json[json.length - 1];
   },
   async addExercise(data) {

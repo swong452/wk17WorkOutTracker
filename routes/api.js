@@ -4,9 +4,10 @@ const db = require("../models");
 // Return all work out by day
 // each day is an object, that has all the exercise of that day
 router.get("/api/workouts", (req, res) => {
-    console.log("get workout API");
+    console.log("Server side, entered routes/api.js router.get/api/workouts");
     db.Workout.find()
         .then(dbworkout => {
+            //console.log("res.json: ", res.json(dbworkout));
             res.json(dbworkout);
         })
         .catch(err => {

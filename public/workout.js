@@ -1,6 +1,8 @@
 async function initWorkout() {
+  // Call getLastWorkout in client public/api.js
+  console.log("Client side: entered workout.js");
   const lastWorkout = await API.getLastWorkout();
-  console.log("Last workout:", lastWorkout);
+  console.log("Client side: entered workout.js, after getLastWorkout(), lastWorkout", lastWorkout);
   if (lastWorkout) {
     document
       .querySelector("a[href='/exercise?']")
@@ -8,10 +10,12 @@ async function initWorkout() {
 
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
-      totalDuration: lastWorkout.totalDuration,
+      // totalDuration: lastWorkout.totalDuration,
+      totalDuration: lastWorkout.exercises[0].duration,
       numExercises: lastWorkout.exercises.length,
       ...tallyExercises(lastWorkout.exercises)
     };
+    console.log("Client side: entered workout.js, workoutSummary for last exercise:", workoutSummary);
 
     renderWorkoutSummary(workoutSummary);
   } else {
