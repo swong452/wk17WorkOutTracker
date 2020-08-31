@@ -3,6 +3,11 @@ async function initWorkout() {
   console.log("Client side: entered workout.js");
   const lastWorkout = await API.getLastWorkout();
   console.log("Client side: entered workout.js, after getLastWorkout(), lastWorkout", lastWorkout);
+  // Below: it PRE-sets the A tag HREF ID variable in index.html , to the very last workout ID
+  // ie. on index.html page, when the mouse hover around "contine workout"
+  // that continue work A Tag Href link; is already present with the LAST workout ID
+  // That way when user actually click on it, when redirect to Exercise page,
+  // the exercise page will be loaded with that last workout ID.
   if (lastWorkout) {
     document
       .querySelector("a[href='/exercise?']")
@@ -10,8 +15,8 @@ async function initWorkout() {
 
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
-      // totalDuration: lastWorkout.totalDuration,
-      totalDuration: lastWorkout.exercises[0].duration,
+      totalDuration: lastWorkout.totalDuration,
+      // totalDuration: lastWorkout.duration,
       numExercises: lastWorkout.exercises.length,
       ...tallyExercises(lastWorkout.exercises)
     };

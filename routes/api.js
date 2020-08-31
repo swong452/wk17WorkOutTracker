@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const db = require("../models");
+const path = require("path");
 
 // Return all work out by day
 // each day is an object, that has all the exercise of that day
@@ -7,7 +8,6 @@ router.get("/api/workouts", (req, res) => {
     console.log("Server side, entered routes/api.js router.get/api/workouts");
     db.Workout.find()
         .then(dbworkout => {
-            //console.log("res.json: ", res.json(dbworkout));
             res.json(dbworkout);
         })
         .catch(err => {
@@ -15,16 +15,31 @@ router.get("/api/workouts", (req, res) => {
         });
 });
 
-// Display all burger, base on logic on index handlebars
-// router.get("/", function (req, res) {
-//     burger.all(function (data) {
-//         console.log("inside burgerController");
-//         var hbsObject = {
-//             burger: data
-//         };
-//         console.log(hbsObject);
-//         res.render("index", hbsObject);
-//     });
-// });
+// When browser click on "Continue workout"
+// will redirect user to exercise page
+// Note the redirect exercise page, will have the ID variable on the URL
+// which is setup in workout.js initWorkout 
+router.get("/exercise", (req, res) => {
+    console.log("Server side, entered routes/api.js router.get/exercise", req.body);
+    res.sendFile(path.join(__dirname, "../public/exercise.html"));
+});
+
+// When user add exercises to the current workout
+router.put("/api/workouts/:id", (req, res) => {
+    console.log("Server side, entered routes/api.js: /api/workouts?:id, body", req.body);
+    console.log("Server side, entered routes/api.js: /api/workouts?:id, ID param", req.params.id);
+    db.Workout.findByIdAndUpdate (
+        req.params.id,
+        {$push: {exercises: req.body}},
+        {new: true, runValidators: true}
+    ).then(dbExercise => {
+        console.log("Server side, entered routes/api.js: /api/workouts?:id, after PUSH", dbExercise);
+        res.json(dbExercise);
+    })
+    .catch(err => {
+        res.json(err);
+    });
+});
+
 
 module.exports = router;

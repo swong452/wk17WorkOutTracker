@@ -114,6 +114,7 @@ async function handleFormSubmit(event) {
     workoutData.duration = Number(resistanceDurationInput.value.trim());
   }
 
+  // Call /public/api.js addExerise
   await API.addExercise(workoutData);
   clearInputs();
   toast.classList.add("success");
@@ -151,6 +152,8 @@ if (addButton) {
 }
 toast.addEventListener("animationend", handleToastAnimationEnd);
 
+// Matching all INPUT tag
+// For each 
 document
   .querySelectorAll("input")
   .forEach(element => element.addEventListener("input", validateInputs));

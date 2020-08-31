@@ -1,6 +1,8 @@
 init();
 
-// init() is triggered when page load (see last config line) 
+// init() is triggered when page FIRST load (see last config line) 
+// i do NOT think this index.js is used when user mover cursor to
+// Either continue workout or new workout.
 // init() will call getLastWorkout that is defined in public / api.js
 async function init() {
   console.log("Client side: Enter index.js asyn init()");

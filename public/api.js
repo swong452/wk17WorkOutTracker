@@ -1,3 +1,6 @@
+// This page serve to define function called by workout.js
+// no listener here.
+// NOtice define various functions in API variabe
 const API = {
   async getLastWorkout() {
     let res;
@@ -11,13 +14,19 @@ const API = {
     // res.json() will retrive an array of objects
     // each object is one day of work out.
     const json = await res.json();
-    // length minus one to get the very last work out
-    console.log("Client - enter public/api.js getLastWorkout(), BEFORE -1, list of workout: ", json);
+    // length minus one , retrun the say 10th item, which is the very last work out
+    console.log("Client - enter public/api.js getLastWorkout(), BEFORE -1, list of workout: ", json.length, json);
     return json[json.length - 1];
   },
-  async addExercise(data) {
-    const id = location.search.split("=")[1];
 
+  // Called from Exercise.html; this is to add more exercise
+  // to the existing workout.
+  async addExercise(data) {
+    //Extract the 1st value after =, which is the id
+    // this is the last workout id.
+    const id = location.search.split("=")[1];
+    console.log("Client - enter public/api.js , addExercise: ID", id);
+    console.log("Client - enter public/api.js , addExercise: data", data);
     const res = await fetch("/api/workouts/" + id, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
