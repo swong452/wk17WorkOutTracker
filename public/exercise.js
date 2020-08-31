@@ -17,10 +17,20 @@ const newWorkout = document.querySelector(".new-workout")
 let workoutType = null;
 let shouldNavigateAway = false;
 
+// Invoke this function on exercise.html page right away
 async function initExercise() {
   let workout;
 
+  // If the path to get to exercise.html screen, is via 
+  // "Continue Workout" button ->, then, the URL Would include
+  // id = xxx value. which means, below location.search will NOT be undefined
+  // thus not execute below (which is correct)
+  // IF the path to reach exercise.html is via "Add Workout"
+  // then, the URL would NOT include id and value, and hence
+  // below location.search will be == undefined.
+  // hence, will add this initial workout, to the new workout. 
   if (location.search.split("=")[1] === undefined) {
+    console.log("Client: exerice.js, Add Workout clicked, next step : createWorkout");
     workout = await API.createWorkout()
     console.log(workout)
   }
@@ -49,6 +59,9 @@ function handleWorkoutTypeChange(event) {
   validateInputs();
 }
 
+// If any of the field are empty, set isValid boolean to false
+// Later, if isValid is false -> grey out, or disable the
+// "Continue workout" or "Add workout" button
 function validateInputs() {
   let isValid = true;
 
@@ -141,19 +154,26 @@ function clearInputs() {
 if (workoutTypeSelect) {
   workoutTypeSelect.addEventListener("change", handleWorkoutTypeChange);
 }
+
+// If Clicked on Complete, add those form info to DB
+// by calling handleFormSubmit
 if (completeButton) {
   completeButton.addEventListener("click", function (event) {
     shouldNavigateAway = true;
     handleFormSubmit(event);
   });
 }
+
+// If Clicked on Add Workout, add those form info to DB
+// by calling handleFormSubmit
 if (addButton) {
   addButton.addEventListener("click", handleFormSubmit);
 }
+
 toast.addEventListener("animationend", handleToastAnimationEnd);
 
 // Matching all INPUT tag
-// For each 
+// For each input field, invoke function validateInputs
 document
   .querySelectorAll("input")
   .forEach(element => element.addEventListener("input", validateInputs));

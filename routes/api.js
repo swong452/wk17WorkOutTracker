@@ -28,18 +28,48 @@ router.get("/exercise", (req, res) => {
 router.put("/api/workouts/:id", (req, res) => {
     console.log("Server side, entered routes/api.js: /api/workouts?:id, body", req.body);
     console.log("Server side, entered routes/api.js: /api/workouts?:id, ID param", req.params.id);
-    db.Workout.findByIdAndUpdate (
+    db.Workout.findByIdAndUpdate(
         req.params.id,
-        {$push: {exercises: req.body}},
-        {new: true, runValidators: true}
+        { $push: { exercises: req.body } },
+        { new: true, runValidators: true }
     ).then(dbExercise => {
         console.log("Server side, entered routes/api.js: /api/workouts?:id, after PUSH", dbExercise);
         res.json(dbExercise);
     })
-    .catch(err => {
-        res.json(err);
-    });
+        .catch(err => {
+            res.json(err);
+        });
 });
+
+// redirect to stats page
+router.get("/stats", (req, res) => {
+    console.log("Server side, entered routes/api.js /stat");
+    res.sendFile(path.join(__dirname, "../public/stats.html"));
+})
+
+// Handle stats.html route
+router.get("/api/workouts/range", (req, res) => {
+    console.log("Server side, entered routes/api.js router.get api/workouts/range");
+    db.Workout.find()
+        .then(dbworkout => {
+            res.json(dbworkout);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+})
+
+// handle add new workout
+router.post("/api/workouts", (req, res) => {
+    console.log("Server side, entered routes/api.js: POST /api/workouts,", req.body);
+    db.Workout.create(req.body).then(dbExercise => {
+        console.log("Server side, entered routes/api.js: /api/workouts?:id, after create", dbExercise);
+        res.json(dbExercise);
+    })
+        .catch(err => {
+            res.json(err);
+        });
+})
 
 
 module.exports = router;

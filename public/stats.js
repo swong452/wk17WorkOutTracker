@@ -8,7 +8,8 @@ fetch("/api/workouts/range")
     populateChart(data);
   });
 
-
+// Question, when stats.js is executed, seem to call /api/workouts/range
+// 2 x times...?
 API.getWorkoutsInRange()
 
   function generatePalette() {
