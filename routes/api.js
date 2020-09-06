@@ -49,9 +49,10 @@ router.get("/stats", (req, res) => {
 
 // Handle stats.html route
 router.get("/api/workouts/range", (req, res) => {
-    console.log("Server side, entered routes/api.js router.get api/workouts/range");
-    db.Workout.find()
-        .then(dbworkout => {
+    console.log("Server side,entered routes/api.js router.get api/workouts/range");
+    // db.Workout.find()
+    db.Workout.find({}).limit(7)
+    .then(dbworkout => {
             res.json(dbworkout);
         })
         .catch(err => {
